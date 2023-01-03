@@ -1,0 +1,7 @@
+CHECK PROGRAM art-gen-worker WITH PATH /etc/monit/scripts/check_container_art-gen-worker.sh
+  START PROGRAM = "/usr/bin/docker start art-gen-worker"
+  STOP PROGRAM = "/usr/bin/docker stop art-gen-worker"
+  IF status != 0 then exec "/etc/monit/scripts/err_slack.sh"
+  and repeat every 1 cycles
+  IF status == 1 then exec "/usr/bin/docker start art-gen-worker"
+  else if succeeded then exec "etc/monit/scripts/succeed_slack.sh"
